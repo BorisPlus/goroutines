@@ -12,24 +12,24 @@ __Комментарий__: родительский процесс заверш
 package main
 
 import (
-	"fmt"
-	"time"
+    "fmt"
+    "time"
 )
 
 const secondsCount, iterationsCount = 3, 5
 
 func worker() {
-	fmt.Println("... job start...")
-	time.Sleep(time.Duration(secondsCount) * time.Second)
-	fmt.Println("... job end...")
+    fmt.Println("... job start...")
+    time.Sleep(time.Duration(secondsCount) * time.Second)
+    fmt.Println("... job end...")
 }
 
 func main() {
-	fmt.Println("... app start ...")
-	for i := 0; i < iterationsCount; i++ {
-		go worker()
-	}
-	fmt.Println("... app end ...")
+    fmt.Println("... app start ...")
+    for i := 0; i < iterationsCount; i++ {
+        go worker()
+    }
+    fmt.Println("... app end ...")
 }
 ```
 
@@ -46,29 +46,29 @@ __Комментарий__: родительский процесс ждет м�
 package main
 
 import (
-	"fmt"
-	"time"
+    "fmt"
+    "time"
 )
 
 const secondsCount, iterationsCount = 3, 5
 
 func worker() {
-	fmt.Println("... job start...")
-	time.Sleep(time.Duration(secondsCount) * time.Second)
-	fmt.Println("... job end...")
+    fmt.Println("... job start...")
+    time.Sleep(time.Duration(secondsCount) * time.Second)
+    fmt.Println("... job end...")
 }
 
 func main() {
-	fmt.Println("... app start ...")
-	for i := 0; i < iterationsCount; i++ {
-		go worker()
-	}
-	time.Sleep(time.Duration(iterationsCount*secondsCount)*time.Second + 1)
-	// Try to change above to
-	// time.Sleep(time.Second)
-	// or cut/comment this row
-	// and you will see not all gorutines were run
-	fmt.Println("... app end ...")
+    fmt.Println("... app start ...")
+    for i := 0; i < iterationsCount; i++ {
+        go worker()
+    }
+    time.Sleep(time.Duration(iterationsCount*secondsCount)*time.Second + 1)
+    // Try to change above to
+    // time.Sleep(time.Second)
+    // or cut/comment this row
+    // and you will see not all gorutines were run
+    fmt.Println("... app end ...")
 }
 ```
 
@@ -84,28 +84,28 @@ __Комментарий__: введена случайного характер
 package main
 
 import (
-	"fmt"
-	"math/rand"
-	"time"
+    "fmt"
+    "math/rand"
+    "time"
 )
 
 const secondsCount, iterationsCount = 3, 5
 
 func worker() {
-	// Добавим стохастичности в длительность работы
-	fmt.Println("... job start ...")
-	secondsToSleep := rand.Intn(secondsCount)
-	time.Sleep(time.Duration(secondsToSleep) * time.Second)
-	fmt.Println("... job worked", secondsToSleep, "sec. and end...")
+    // Добавим стохастичности в длительность работы
+    fmt.Println("... job start ...")
+    secondsToSleep := rand.Intn(secondsCount)
+    time.Sleep(time.Duration(secondsToSleep) * time.Second)
+    fmt.Println("... job worked", secondsToSleep, "sec. and end...")
 }
 
 func main() {
-	fmt.Println("... app start ...")
-	for i := 0; i < iterationsCount; i++ {
-		go worker()
-	}
-	time.Sleep(time.Duration(iterationsCount*secondsCount)*time.Second + 1)
-	fmt.Println("... app end ...")
+    fmt.Println("... app start ...")
+    for i := 0; i < iterationsCount; i++ {
+        go worker()
+    }
+    time.Sleep(time.Duration(iterationsCount*secondsCount)*time.Second + 1)
+    fmt.Println("... app end ...")
 }
 ```
 
@@ -121,36 +121,36 @@ __Комментарий__: канал следит за фактом испол
 package main
 
 import (
-	"fmt"
-	"math/rand"
-	"time"
+    "fmt"
+    "math/rand"
+    "time"
 )
 
 const secondsCount, iterationsCount = 3, 5
 
 func worker(id int, c chan int) {
-	// Объявляя канал как аргумент, функция превращается в "грязную"
-	// и таким образом реализует возможность возврата значения во вне
-	fmt.Println("... worker ID:", id, "will start ...")
-	secondsToSleep := rand.Intn(secondsCount)
-	time.Sleep(time.Duration(secondsToSleep) * time.Second)
-	fmt.Println("... worker ID:", id, "worked", secondsToSleep, "sec. and end...")
-	c <- id // Отправляет значение обратно к main
+    // Объявляя канал как аргумент, функция превращается в "грязную"
+    // и таким образом реализует возможность возврата значения во вне
+    fmt.Println("... worker ID:", id, "will start ...")
+    secondsToSleep := rand.Intn(secondsCount)
+    time.Sleep(time.Duration(secondsToSleep) * time.Second)
+    fmt.Println("... worker ID:", id, "worked", secondsToSleep, "sec. and end...")
+    c <- id // Отправляет значение обратно к main
 }
 
 func main() {
-	fmt.Println("... app start ...")
-	c := make(chan int) // Делает канал для связи
-	for i := 0; i < iterationsCount; i++ {
-		go worker(i, c)
-	}
-	// если сделать i < iterationsCount+1, то будет
-	// fatal error: all goroutines are asleep - deadlock!
-	for i := 0; i < iterationsCount; i++ {
-		workerID := <-c // Получает значение от канала // blocked waiting for a notification
-		fmt.Println("worker ID:", workerID, "finished")
-	}
-	fmt.Println("... app end ...")
+    fmt.Println("... app start ...")
+    c := make(chan int) // Делает канал для связи
+    for i := 0; i < iterationsCount; i++ {
+        go worker(i, c)
+    }
+    // если сделать i < iterationsCount+1, то будет
+    // fatal error: all goroutines are asleep - deadlock!
+    for i := 0; i < iterationsCount; i++ {
+        workerID := <-c // Получает значение от канала // blocked waiting for a notification
+        fmt.Println("worker ID:", workerID, "finished")
+    }
+    fmt.Println("... app end ...")
 }
 ```
 
@@ -164,55 +164,55 @@ func main() {
 package main
 
 import (
-	"fmt"
-	"math/rand"
-	"time"
+    "fmt"
+    "math/rand"
+    "time"
 )
 
 const secondsCount, jobsCount, workerCount = 3, 15, 3
 
 func logic(input int) int {
-	return input * 2
+    return input * 2
 }
 
 func worker(id int, jobs <-chan int, resultsChan chan<- [3]int) {
-	for input := range jobs {
-		fmt.Println("... worker ID:", id, "will start ...")
-		secondsToSleep := rand.Intn(secondsCount)
-		time.Sleep(time.Duration(secondsToSleep) * time.Second)
-		output := logic(input)
-		fmt.Println("... worker ID:", id, "worked", secondsToSleep, "sec. and end...")
-		result := [3]int{id, input, output}
-		resultsChan <- result
-	}
+    for input := range jobs {
+        fmt.Println("... worker ID:", id, "will start ...")
+        secondsToSleep := rand.Intn(secondsCount)
+        time.Sleep(time.Duration(secondsToSleep) * time.Second)
+        output := logic(input)
+        fmt.Println("... worker ID:", id, "worked", secondsToSleep, "sec. and end...")
+        result := [3]int{id, input, output}
+        resultsChan <- result
+    }
 }
 
 func main() {
 
-	fmt.Println("... app start ...")
-	// result := [3]int{0, 0, 0}
-	// const jobsCount = 5
-	// int k := 0
-	jobsChan := make(chan int, jobsCount)
-	resultsChan := make(chan [3]int, jobsCount)
+    fmt.Println("... app start ...")
+    // result := [3]int{0, 0, 0}
+    // const jobsCount = 5
+    // int k := 0
+    jobsChan := make(chan int, jobsCount)
+    resultsChan := make(chan [3]int, jobsCount)
 
-	for w := 1; w <= workerCount; w++ {
-		go worker(w, jobsChan, resultsChan)
-	}
+    for w := 1; w <= workerCount; w++ {
+        go worker(w, jobsChan, resultsChan)
+    }
 
-	for j := 1; j <= jobsCount; j++ {
-		jobsChan <- j
-	}
-	// close(jobsChan)
+    for j := 1; j <= jobsCount; j++ {
+        jobsChan <- j
+    }
+    // close(jobsChan)
 
-	for r := 1; r <= jobsCount; r++ {
-		// <- resultsChan
-		result := <-resultsChan
-		// fmt.Println("... worker ", id, inputed, outputed, " job end ...")
-		fmt.Println("... worker ", result[0], result[1], result[2], " job end ...")
-		// fmt.Println("... worker ", result, " job end ...")
-	}
-	fmt.Println("... app end ...")
+    for r := 1; r <= jobsCount; r++ {
+        // <- resultsChan
+        result := <-resultsChan
+        // fmt.Println("... worker ", id, inputed, outputed, " job end ...")
+        fmt.Println("... worker ", result[0], result[1], result[2], " job end ...")
+        // fmt.Println("... worker ", result, " job end ...")
+    }
+    fmt.Println("... app end ...")
 }
 ```
 
@@ -226,61 +226,65 @@ func main() {
 package main
 
 import (
-	"fmt"
-	"math/rand"
-	"time"
+    "fmt"
+    "math/rand"
+    "time"
 )
 
 const secondsCount, jobsCount, workerCount = 3, 5, 3
 
 func logic(input int) int {
-	return input * 2
+    return input * 2
 }
 
 func worker(id int, jobs <-chan int, resultsChan chan<- map[string]int) {
-	for input := range jobs {
-		fmt.Println("... worker ID:", id, "will start ...")
-		secondsToSleep := rand.Intn(secondsCount)
-		time.Sleep(time.Duration(secondsToSleep) * time.Second)
-		output := logic(input)
-		fmt.Println("... worker ID:", id, "worked", secondsToSleep, "sec. and end...")
-		result := map[string]int{
-			"id":     id,
-			"input":  input,
-			"output": output,
-		}
-		resultsChan <- result
-	}
+    for input := range jobs {
+        fmt.Println("... worker ID:", id, "will start ...")
+        secondsToSleep := rand.Intn(secondsCount)
+        time.Sleep(time.Duration(secondsToSleep) * time.Second)
+        output := logic(input)
+        fmt.Println("... worker ID:", id, "worked", secondsToSleep, "sec. and end...")
+        result := map[string]int{
+            "id":     id,
+            "input":  input,
+            "output": output,
+        }
+        resultsChan <- result
+    }
 }
 
 func main() {
 
-	fmt.Println("... app start ...")
-	// result := [3]int{0, 0, 0}
-	// int k := 0
-	jobsChan := make(chan int, jobsCount)
-	resultsChan := make(chan map[string]int, jobsCount)
+    fmt.Println("... app start ...")
+    // result := [3]int{0, 0, 0}
+    // int k := 0
+    jobsChan := make(chan int, jobsCount)
+    resultsChan := make(chan map[string]int, jobsCount)
 
-	for w := 1; w <= workerCount; w++ {
-		go worker(w, jobsChan, resultsChan)
-	}
+    for w := 1; w <= workerCount; w++ {
+        go worker(w, jobsChan, resultsChan)
+    }
 
-	for j := 1; j <= jobsCount; j++ {
-		jobsChan <- j
-	}
-	close(jobsChan)
+    for j := 1; j <= jobsCount; j++ {
+        jobsChan <- j
+    }
+    close(jobsChan)
 
-	for r := 1; r <= jobsCount; r++ {
-		// <- resultsChan
-		result := <-resultsChan
-		// fmt.Println("... worker ", id, inputed, outputed, " job end ...")
-		fmt.Println("... worker ID:", result["id"],
-			"start with INPUT:", result["input"],
-			"and end with OUTPUT:", result["output"], " ...")
-		// fmt.Println("... worker ", result, " job end ...")
-	}
-	fmt.Println("... app end ...")
+    for r := 1; r <= jobsCount; r++ {
+        // <- resultsChan
+        result := <-resultsChan
+        // fmt.Println("... worker ", id, inputed, outputed, " job end ...")
+        fmt.Println("... worker ID:", result["id"],
+            "start with INPUT:", result["input"],
+            "and end with OUTPUT:", result["output"], " ...")
+        // fmt.Println("... worker ", result, " job end ...")
+    }
+    fmt.Println("... app end ...")
 }
 ```
 
 </details>
+
+## Вывод
+
+Родительский процесс отслеживает результаты (предсиавлены map-структурой) работы ограниченного числа "дочерних" горутин,
