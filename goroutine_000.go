@@ -8,9 +8,9 @@ import (
 const secondsCount, iterationsCount = 3, 5
 
 func worker() {
-	fmt.Println("... job start...")
+	fmt.Println("... job start ...")
 	time.Sleep(time.Duration(secondsCount) * time.Second)
-	fmt.Println("... job end...")
+	fmt.Println("... job end ...")
 }
 
 func main() {

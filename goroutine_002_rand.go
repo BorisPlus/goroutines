@@ -9,11 +9,10 @@ import (
 const secondsCount, iterationsCount = 3, 5
 
 func worker() {
-	// Добавим стохастичности в длительность работы
 	fmt.Println("... job start ...")
 	secondsToSleep := rand.Intn(secondsCount)
 	time.Sleep(time.Duration(secondsToSleep) * time.Second)
-	fmt.Println("... job worked", secondsToSleep, "sec. and end...")
+	fmt.Println("... job worked", secondsToSleep, "sec. and end ...")
 }
 
 func main() {

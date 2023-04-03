@@ -19,9 +19,5 @@ func main() {
 		go worker()
 	}
 	time.Sleep(time.Duration(iterationsCount*secondsCount)*time.Second + 1)
-	// Try to change above to
-	// time.Sleep(time.Second)
-	// or cut/comment this row
-	// and you will see not all gorutines were run
 	fmt.Println("... app end ...")
 }
