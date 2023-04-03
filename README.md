@@ -31,7 +31,7 @@ func main() {
 }
 ```
 
-[](./goroutine_000.go )
+[goroutine_000.go](./goroutine_000.go)
 
 ```bash
 $ go run goroutine_000.go 
@@ -69,7 +69,7 @@ func main() {
 }
 ```
 
-[](./goroutine_001.go )
+[goroutine_001.go](./goroutine_001.go)
 
 ```bash
 $ go run goroutine_001.go 
@@ -120,7 +120,7 @@ func main() {
 }
 ```
 
-[](./goroutine_002_rand.go )
+[goroutine_002_rand.go](./goroutine_002_rand.go)
 
 ```bash
 $ go run goroutine_002_rand.go 
@@ -179,7 +179,7 @@ func main() {
 }
 ```
 
-[](./goroutine_003_chan.go )
+[goroutine_003_chan.go](./goroutine_003_chan.go)
 
 ```bash
 $ go run goroutine_003_chan.go 
@@ -253,7 +253,7 @@ func main() {
 }
 ```
 
-[](./goroutine_004_pool.go )
+[goroutine_004_pool.go](./goroutine_004_pool.go)
 
 ```bash
 $ go run goroutine_004_pool.go 
@@ -334,7 +334,7 @@ func main() {
 }
 ```
 
-[](./goroutine_005_pool_map_result.go)
+[goroutine_005_pool_map_result.go](./goroutine_005_pool_map_result.go)
 
 ```bash
 $ go run goroutine_005_pool_map_result.go 
